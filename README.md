@@ -4,7 +4,7 @@ simple naming and resolver service for grpc, support etcd and redis.
 
 # Usage
 
-##1. Redis
+## 1. Redis
 
 ### Server
 
@@ -85,7 +85,7 @@ func main() {
 
 ```
 
-##2. Etcd 
+## 2. Etcd 
 
 ### Server
 
