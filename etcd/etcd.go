@@ -3,7 +3,7 @@ package etcd
 import (
 	"errors"
 	"github.com/whatvn/denny/log"
-	"github.com/whatvn/denny/naming"
+	"github.com/whatvn/discovery"
 	"go.etcd.io/etcd/clientv3"
 	"google.golang.org/grpc/resolver"
 	"strings"
@@ -21,7 +21,7 @@ type etcd struct {
 // etcd
 // implement github.com/whatvn/denny/naming#Registry
 // with 2 methods: Register and UnRegister
-func New(etcdAddrs, serviceName string) naming.Registry {
+func New(etcdAddrs, serviceName string) discovery.Registry {
 
 	cli, err := clientv3.New(clientv3.Config{
 		Endpoints:   strings.Split(etcdAddrs, ";"),
@@ -44,4 +44,4 @@ func New(etcdAddrs, serviceName string) naming.Registry {
 	return registry
 }
 
-var _ naming.Registry = new(etcd)
+var _ discovery.Registry = new(etcd)

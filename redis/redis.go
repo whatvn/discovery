@@ -3,7 +3,7 @@ package redis
 import (
 	redisCli "github.com/go-redis/redis"
 	"github.com/whatvn/denny/log"
-	"github.com/whatvn/denny/naming"
+	"github.com/whatvn/discovery"
 	"google.golang.org/grpc/resolver"
 )
 
@@ -15,7 +15,7 @@ type redis struct {
 	serviceName string
 }
 
-func New(redisAddr, redisPassword, serviceName string) naming.Registry {
+func New(redisAddr, redisPassword, serviceName string) discovery.Registry {
 	client := redisCli.NewClient(&redisCli.Options{
 		Addr:     redisAddr,
 		Password: redisPassword,
@@ -34,4 +34,4 @@ func New(redisAddr, redisPassword, serviceName string) naming.Registry {
 	return registry
 }
 
-var _ naming.Registry = new(redis)
+var _ discovery.Registry = new(redis)

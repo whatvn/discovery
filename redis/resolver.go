@@ -2,7 +2,7 @@ package redis
 
 import (
 	"errors"
-	"github.com/whatvn/denny/naming"
+	"github.com/whatvn/discovery"
 	"google.golang.org/grpc/resolver"
 	"strings"
 	"time"
@@ -10,7 +10,7 @@ import (
 
 // NewResolver is alias to New(), and also register resolver automatically
 // so client does not have to call register resolver everytime
-func NewResolver(redisAddr, redisPwd, serviceName string) naming.Registry {
+func NewResolver(redisAddr, redisPwd, serviceName string) discovery.Registry {
 	registry := New(redisAddr, redisPwd, serviceName)
 	resolver.Register(registry)
 	return registry
@@ -57,7 +57,7 @@ func (r *redis) watch(keyPrefix string) {
 				needUpdate := false
 				// append to state list if it's not exist
 				for _, addr := range updatedList {
-					if !naming.Exist(addrList, addr.Addr) {
+					if !discovery.Exist(addrList, addr.Addr) {
 						needUpdate = true
 						addrList = append(addrList, addr)
 					}
@@ -65,9 +65,9 @@ func (r *redis) watch(keyPrefix string) {
 
 				// remove dead peer
 				for _, addr := range addrList {
-					if !naming.Exist(updatedList, addr.Addr) {
+					if !discovery.Exist(updatedList, addr.Addr) {
 						needUpdate = true
-						if s, ok := naming.Remove(addrList, addr.Addr); ok {
+						if s, ok := discovery.Remove(addrList, addr.Addr); ok {
 							addrList = s
 						}
 					}
@@ -95,7 +95,7 @@ func (r *redis) addressList(keyPrefix string, addrList []resolver.Address) ([]re
 }
 
 func (r redis) Scheme() string {
-	return naming.Prefix
+	return discovery.Prefix
 }
 
 func (r redis) SvcName() string {

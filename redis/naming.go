@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"github.com/whatvn/denny/naming"
+	"github.com/whatvn/discovery"
 	"time"
 )
 
@@ -9,7 +9,7 @@ func (r *redis) Register(addr string, ttl int) error {
 	var (
 		ticker  = time.NewTicker(time.Second * time.Duration(ttl))
 		err     error
-		svcPath = "/" + naming.Prefix + "/" + r.serviceName + "/" + addr
+		svcPath = "/" + discovery.Prefix + "/" + r.serviceName + "/" + addr
 	)
 
 	r.Infof("register %s with registy", svcPath)
@@ -38,7 +38,7 @@ func (r *redis) Register(addr string, ttl int) error {
 
 func (r *redis) register(addr string, ttl int) error {
 	var (
-		svcPath = "/" + naming.Prefix + "/" + r.serviceName + "/" + addr
+		svcPath = "/" + discovery.Prefix + "/" + r.serviceName + "/" + addr
 	)
 
 	existCmd := r.cli.Exists(svcPath)
@@ -59,7 +59,7 @@ func (r *redis) register(addr string, ttl int) error {
 
 func (r *redis) UnRegister(addr string) error {
 	var (
-		svcPath = "/" + naming.Prefix + "/" + r.serviceName + "/" + addr
+		svcPath = "/" + discovery.Prefix + "/" + r.serviceName + "/" + addr
 	)
 	r.shutdown <- "stop"
 	return r.cli.Del(svcPath).Err()
